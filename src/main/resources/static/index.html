@@ -1,46 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Task Tracker</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <title>⚡ Futuristic Task Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
     body {
-      background: #f8f9fa;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .task-card {
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+    }
+
+    .form-control::placeholder {
+      color: #bbb;
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid #00d1ff;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background-color: #00d1ff;
+      border: none;
+    }
+
+    .btn-danger {
+      background-color: #ff4e50;
+      border: none;
+    }
+
+    .task-item {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
       margin-bottom: 0.5rem;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .task-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .badge {
+      font-size: 0.8rem;
+    }
+
+    .text-muted {
+      color: #aaa !important;
+    }
+
+    .empty-state {
+      text-align: center;
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body class="container py-5">
 
-  <div class="text-center mb-4">
-    <h2 class="fw-bold text-primary">📝 Task Tracker</h2>
-    <p class="text-muted">Track and manage your tasks efficiently!</p>
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-info"><i class="fas fa-rocket me-2"></i>Futuristic Task Tracker</h1>
+    <p class="text-muted">Organize your tasks in style 🚀</p>
   </div>
 
   <!-- Task Form -->
-  <div class="card p-3 shadow-sm mb-4">
-    <form id="taskForm" class="row g-2 align-items-center">
+  <div class="glass-card mb-4">
+    <form id="taskForm" class="row g-3">
       <div class="col-md-9">
-        <input type="text" id="title" class="form-control" placeholder="Enter a task" required />
+        <input type="text" id="title" class="form-control" placeholder="What's on your mind?" required />
       </div>
       <div class="col-md-3 text-end">
-        <button type="submit" class="btn btn-primary w-100">➕ Add Task</button>
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus me-1"></i> Add Task</button>
       </div>
     </form>
   </div>
 
   <!-- Task List -->
-  <div class="card p-3 shadow-sm">
-    <h5 class="mb-3 text-secondary">📋 Task List</h5>
-    <ul id="taskList" class="list-group list-group-flush"></ul>
-    <p id="emptyMessage" class="text-muted mt-2 d-none">No tasks yet. Add one above!</p>
+  <div class="glass-card">
+    <h5 class="text-info mb-3"><i class="fas fa-tasks me-2"></i>Your Tasks</h5>
+    <ul id="taskList" class="list-unstyled mb-0"></ul>
+    <div id="emptyMessage" class="empty-state d-none">✨ No tasks yet. Add something above!</div>
   </div>
 
   <script>
@@ -49,17 +110,20 @@
     const emptyMessage = document.getElementById('emptyMessage');
 
     async function loadTasks() {
-      const res = await fetch('http://localhost:8080/api/tasks'); // ✅ relative URL
+      const res = await fetch('http://localhost:8080/api/tasks');
       const tasks = await res.json();
       list.innerHTML = '';
+
       if (tasks.length === 0) {
         emptyMessage.classList.remove('d-none');
         return;
       }
+
       emptyMessage.classList.add('d-none');
+
       tasks.forEach(task => {
         const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center task-card';
+        li.className = 'd-flex justify-content-between align-items-center task-item';
 
         li.innerHTML = `
           <div class="d-flex align-items-center">
@@ -68,11 +132,11 @@
             </span>
             <span class="text-break">${task.title}</span>
           </div>
-          <button class="btn btn-sm btn-danger">🗑 Delete</button>
+          <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
         `;
 
         li.querySelector('button').onclick = async () => {
-          await fetch(`http://localhost:8080/api/tasks/${task.id}`, { method: 'DELETE' }); // ✅ relative URL
+          await fetch(`http://localhost:8080/api/tasks/${task.id}`, { method: 'DELETE' });
           loadTasks();
         };
 
@@ -84,11 +148,13 @@
       e.preventDefault();
       const title = document.getElementById('title').value.trim();
       if (!title) return;
-      await fetch('http://localhost:8080/api/tasks', { // ✅ relative URL
+
+      await fetch('http://localhost:8080/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, done: false })
       });
+
       form.reset();
       loadTasks();
     };
