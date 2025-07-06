@@ -110,7 +110,7 @@
     const emptyMessage = document.getElementById('emptyMessage');
 
     async function loadTasks() {
-      const res = await fetch('http://localhost:8080/api/tasks');
+      const res = await fetch('http://13.127.90.133:8080/api/tasks');
       const tasks = await res.json();
       list.innerHTML = '';
 
@@ -136,7 +136,7 @@
         `;
 
         li.querySelector('button').onclick = async () => {
-          await fetch(`http://localhost:8080/api/tasks/${task.id}`, { method: 'DELETE' });
+          await fetch(`http://13.127.90.133:8080/api/tasks/${task.id}`, { method: 'DELETE' });
           loadTasks();
         };
 
@@ -149,7 +149,7 @@
       const title = document.getElementById('title').value.trim();
       if (!title) return;
 
-      await fetch('http://localhost:8080/api/tasks', {
+      await fetch('http://13.127.90.133:8080/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, done: false })
