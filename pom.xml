@@ -15,41 +15,65 @@
   </properties>
 
   <dependencies>
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-    <version>${spring.boot.version}</version>
-    <exclusions>
-      <exclusion>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-tomcat</artifactId>
-      </exclusion>
-    </exclusions>
-  </dependency>
+    <!-- Spring Web without embedded Tomcat -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring.boot.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-tomcat</artifactId>
-    <version>${spring.boot.version}</version>
-    <scope>provided</scope>
-  </dependency>
+    <!-- Provided Tomcat for external deployment -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <version>${spring.boot.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-  <dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>6.0.0</version>
-    <scope>provided</scope>
-  </dependency>
-</dependencies>
-
+    <!-- Servlet API -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
   <build>
+    <finalName>task-tracker</finalName>
     <plugins>
+      <!-- Disable repackage to avoid fat WAR -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.boot.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Avoid error if no web.xml -->
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
       </plugin>
     </plugins>
   </build>
+
 </project>
