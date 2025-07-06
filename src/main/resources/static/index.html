@@ -11,63 +11,135 @@
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1rem;
     }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      padding: 2rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .container {
+      max-width: 480px;
+      width: 100%;
     }
-
-    .form-control {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: none;
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
     }
-
-    .form-control::placeholder {
+    .header h1 {
+      font-weight: 700;
+      color: #00d1ff;
+    }
+    .header p {
       color: #bbb;
+      font-size: 1.1rem;
     }
 
-    .form-control:focus {
+    .task-form {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.8rem 1.5rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 209, 255, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .task-form input {
       background-color: rgba(255, 255, 255, 0.15);
+      border: none;
       color: #fff;
-      border: 1px solid #00d1ff;
-      box-shadow: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 1rem;
+      width: 100%;
+      transition: background-color 0.3s ease;
     }
 
-    .btn-primary {
-      background-color: #00d1ff;
+    .task-form input::placeholder {
+      color: #ddd;
+    }
+
+    .task-form input:focus {
+      background-color: rgba(255, 255, 255, 0.3);
+      outline: none;
+      box-shadow: 0 0 8px #00d1ff;
+    }
+
+    .task-form button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 10px;
       border: none;
+      background: #00d1ff;
+      color: #000;
+      box-shadow: 0 6px 12px rgba(0, 209, 255, 0.7);
+      transition: background 0.3s ease;
+    }
+    .task-form button:hover {
+      background: #00a3cc;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 163, 204, 0.9);
     }
 
-    .btn-danger {
-      background-color: #ff4e50;
-      border: none;
+    .task-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
     }
-
-    .task-item {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem 1rem;
-      transition: all 0.2s ease-in-out;
+    .task-list li {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      transition: background 0.3s ease;
     }
-
-    .task-item:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+    .task-list li:hover {
+      background: rgba(255, 255, 255, 0.18);
     }
-
+    .task-title {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.05rem;
+      color: #eee;
+      word-break: break-word;
+      flex: 1;
+    }
     .badge {
-      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4em 0.7em;
+      border-radius: 10px;
+      font-size: 0.85rem;
     }
-
-    .text-muted {
-      color: #aaa !important;
+    .badge-success {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .badge-secondary {
+      background-color: #6c757d;
+      color: #fff;
+    }
+    .btn-delete {
+      background: #ff4e50;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .btn-delete:hover {
+      background: #e04344;
     }
 
     .empty-state {
@@ -75,32 +147,31 @@
       font-size: 1rem;
       opacity: 0.7;
       margin-top: 1rem;
+      color: #ccc;
     }
   </style>
 </head>
-<body class="container py-5">
+<body>
 
-  <div class="text-center mb-5">
-    <h1 class="fw-bold text-info"><i class="fas fa-rocket me-2"></i>Futuristic Task Tracker</h1>
-    <p class="text-muted">Organize your tasks in style 🚀</p>
-  </div>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-rocket"></i> Futuristic Task Tracker</h1>
+      <p>Organize your tasks in style 🚀</p>
+    </div>
 
-  <!-- Task Form -->
-  <div class="glass-card mb-4">
-    <form id="taskForm" class="row g-3">
-      <div class="col-md-9">
-        <input type="text" id="title" class="form-control" placeholder="What's on your mind?" required />
-      </div>
-      <div class="col-md-3 text-end">
-        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus me-1"></i> Add Task</button>
-      </div>
+    <form id="taskForm" class="task-form" autocomplete="off">
+      <input
+        type="text"
+        id="title"
+        placeholder="What’s on your mind?"
+        required
+        maxlength="100"
+        autofocus
+      />
+      <button type="submit"><i class="fas fa-plus"></i> Add Task</button>
     </form>
-  </div>
 
-  <!-- Task List -->
-  <div class="glass-card">
-    <h5 class="text-info mb-3"><i class="fas fa-tasks me-2"></i>Your Tasks</h5>
-    <ul id="taskList" class="list-unstyled mb-0"></ul>
+    <ul id="taskList" class="task-list"></ul>
     <div id="emptyMessage" class="empty-state d-none">✨ No tasks yet. Add something above!</div>
   </div>
 
@@ -110,38 +181,43 @@
     const emptyMessage = document.getElementById('emptyMessage');
 
     async function loadTasks() {
-      const res = await fetch('http://13.127.90.133:8080/api/tasks');
-      const tasks = await res.json();
-      list.innerHTML = '';
+      try {
+        const res = await fetch('http://13.127.90.133:8080/api/tasks');
+        if (!res.ok) throw new Error('Failed to load tasks');
+        const tasks = await res.json();
+        list.innerHTML = '';
 
-      if (tasks.length === 0) {
+        if (tasks.length === 0) {
+          emptyMessage.classList.remove('d-none');
+          return;
+        }
+
+        emptyMessage.classList.add('d-none');
+
+        tasks.forEach(task => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="task-title">
+              <span class="badge ${task.done ? 'badge-success' : 'badge-secondary'}">${task.done ? 'Done' : 'Todo'}</span>
+              <span>${task.title}</span>
+            </div>
+            <button class="btn-delete" title="Delete Task">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          `;
+
+          li.querySelector('button').onclick = async () => {
+            await fetch(`http://13.127.90.133:8080/api/tasks/${task.id}`, { method: 'DELETE' });
+            loadTasks();
+          };
+
+          list.appendChild(li);
+        });
+      } catch (err) {
+        console.error(err);
+        emptyMessage.textContent = '⚠️ Could not load tasks. Please try again later.';
         emptyMessage.classList.remove('d-none');
-        return;
       }
-
-      emptyMessage.classList.add('d-none');
-
-      tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.className = 'd-flex justify-content-between align-items-center task-item';
-
-        li.innerHTML = `
-          <div class="d-flex align-items-center">
-            <span class="badge bg-${task.done ? 'success' : 'secondary'} me-2">
-              ${task.done ? 'Done' : 'Todo'}
-            </span>
-            <span class="text-break">${task.title}</span>
-          </div>
-          <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-        `;
-
-        li.querySelector('button').onclick = async () => {
-          await fetch(`http://13.127.90.133:8080/api/tasks/${task.id}`, { method: 'DELETE' });
-          loadTasks();
-        };
-
-        list.appendChild(li);
-      });
     }
 
     form.onsubmit = async (e) => {
@@ -149,14 +225,18 @@
       const title = document.getElementById('title').value.trim();
       if (!title) return;
 
-      await fetch('http://13.127.90.133:8080/api/tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, done: false })
-      });
-
-      form.reset();
-      loadTasks();
+      try {
+        const res = await fetch('http://13.127.90.133:8080/api/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, done: false }),
+        });
+        if (!res.ok) throw new Error('Failed to add task');
+        form.reset();
+        loadTasks();
+      } catch (err) {
+        alert('Error adding task. Please try again.');
+      }
     };
 
     loadTasks();
