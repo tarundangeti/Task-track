@@ -28,7 +28,7 @@ jobs:
           TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
           TOMCAT_HOST: ${{ secrets.TOMCAT_HOST }}
         run: |
-          WAR_FILE=target/cdms-0.0.1-SNAPSHOT.war
+          WAR_FILE=target/task-tracker-1.0.0.war
 
           if [ ! -f "$WAR_FILE" ]; then
             echo "❌ WAR file not found: $WAR_FILE"
@@ -40,7 +40,7 @@ jobs:
           TOMCAT_PASSWORD=$(echo -n "$TOMCAT_PASSWORD" | tr -d '\r\n')
           TOMCAT_HOST=$(echo -n "$TOMCAT_HOST" | tr -d '\r\n')
 
-          DEPLOY_URL="http://${TOMCAT_HOST}:8080/manager/text/deploy?path=/cdms-0.0.1-SNAPSHOT&update=true"
+          DEPLOY_URL="http://${TOMCAT_HOST}:8080/manager/text/deploy?path=/task-tracker-1.0.0&update=true"
 
           echo "🚀 Deploying WAR to: $DEPLOY_URL"
 
