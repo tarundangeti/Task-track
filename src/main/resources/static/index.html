@@ -19,10 +19,9 @@
 </head>
 <body class="container py-5">
 
-  
   <div class="text-center mb-4">
     <h2 class="fw-bold text-primary">📝 Task Tracker</h2>
-    <p class="text-muted">Track and manage your tasks efficiently! by this applications</p>
+    <p class="text-muted">Track and manage your tasks efficiently!</p>
   </div>
 
   <!-- Task Form -->
@@ -50,7 +49,7 @@
     const emptyMessage = document.getElementById('emptyMessage');
 
     async function loadTasks() {
-      const res = await fetch('http://localhost:8080/api/tasks');
+      const res = await fetch('/api/tasks');   // ✅ relative path
       const tasks = await res.json();
       list.innerHTML = '';
       if (tasks.length === 0) {
@@ -73,7 +72,7 @@
         `;
 
         li.querySelector('button').onclick = async () => {
-          await fetch(`http://localhost:8080/api/tasks/${task.id}`, { method: 'DELETE' });
+          await fetch(`/api/tasks/${task.id}`, { method: 'DELETE' });  // ✅ relative path
           loadTasks();
         };
 
@@ -85,7 +84,7 @@
       e.preventDefault();
       const title = document.getElementById('title').value.trim();
       if (!title) return;
-      await fetch('http://localhost:8080/api/tasks', {
+      await fetch('/api/tasks', {   // ✅ relative path
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, done: false })
