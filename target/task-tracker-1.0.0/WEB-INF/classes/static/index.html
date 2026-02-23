@@ -49,7 +49,7 @@
     const emptyMessage = document.getElementById('emptyMessage');
 
     async function loadTasks() {
-      const res = await fetch('http://localhost:8080/api/tasks');
+      const res = await fetch('/api/tasks');   // ✅ relative path
       const tasks = await res.json();
       list.innerHTML = '';
       if (tasks.length === 0) {
@@ -72,7 +72,7 @@
         `;
 
         li.querySelector('button').onclick = async () => {
-          await fetch(`http://localhost:8080/api/tasks/${task.id}`, { method: 'DELETE' });
+          await fetch(`/api/tasks/${task.id}`, { method: 'DELETE' });  // ✅ relative path
           loadTasks();
         };
 
@@ -84,7 +84,7 @@
       e.preventDefault();
       const title = document.getElementById('title').value.trim();
       if (!title) return;
-      await fetch('http://localhost:8080/api/tasks', {
+      await fetch('/api/tasks', {   // ✅ relative path
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, done: false })
